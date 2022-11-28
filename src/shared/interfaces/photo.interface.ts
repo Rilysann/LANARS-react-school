@@ -1,6 +1,6 @@
 export interface IPhoto {
     date: number;
-    description: string | undefined;
+    description: string;
     id: number;
     image: string;
     size: number;
