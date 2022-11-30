@@ -45,7 +45,12 @@ export class API {
     } catch (error) {
       return this.errorRequest(route, data);
     }
-    return await this.routes[route]?.update(data);
+    const oldData = ((await this.get(`${path}?id=${data.id}`)) as any[])?.[0];
+    
+    return await this.routes[route]?.update({
+      ...oldData,
+      ...data,
+    });
   }
 
   async delete(path: `${Route}${string}`) {

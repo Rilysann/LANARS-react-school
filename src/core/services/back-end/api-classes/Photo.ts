@@ -47,6 +47,7 @@ class PhotoEntity {
   date = 0;
   size = 0;
   type = '';
+  id?: number;
   
   constructor(data: PhotoEntity) {
     this.date = data.date;
@@ -54,5 +55,10 @@ class PhotoEntity {
     this.image = data.image;
     this.size = data.size;
     this.type = data.type;
+    if (data.id) {
+      this.id = data.id;
+    } else {
+      delete this.id;
+    }
   }
 }

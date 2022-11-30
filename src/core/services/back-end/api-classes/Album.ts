@@ -5,7 +5,7 @@ import { BackEndAbstract } from './BackEndAbstract';
 export class Album extends BackEndAbstract<AlbumEntity> {
   readonly route = '/api/albums';
   readonly tableName = 'albums';
-  readonly requiredFields = ['title', 'description'];
+  readonly requiredFields = ['title'];
 
   constructor() {
     super();
@@ -42,11 +42,17 @@ class AlbumEntity {
   description = '';
   photos = []; 
   date: number;
+  id?: number;
 
   constructor(data: AlbumEntity) {
     this.date = Date.now();
     this.title = data.title;
-    this.description = data.description;
+    this.description = data.description || '';
     this.photos = data.photos || this.photos;
+    if (data.id) {
+      this.id = data.id;
+    } else {
+      delete this.id;
+    }
   }
 }
