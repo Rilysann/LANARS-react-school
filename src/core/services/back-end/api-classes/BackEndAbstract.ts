@@ -16,7 +16,8 @@ export abstract class BackEndAbstract<Entity extends object> {
   constructor() {}
 
   async create<T extends Entity>(data: T): Promise<T> {
-    return Storage.putValue(this.tableName, this.entity(data));
+    const newId = await Storage.putValue(this.tableName, this.entity(data))
+    return Storage.getValue(this.tableName, newId);
   }
 
   async read<T, I extends number | undefined>(query: Query): Promise<I extends number ? T : T[]> {
@@ -26,7 +27,7 @@ export abstract class BackEndAbstract<Entity extends object> {
 
     const values = await Storage.getAllValue(this.tableName);
     let filteredValues = values;
-
+    
     if (query.ids.length) {
       filteredValues = filteredValues?.filter((value: EntityAbstract) => query?.ids?.includes(value.id));
     }

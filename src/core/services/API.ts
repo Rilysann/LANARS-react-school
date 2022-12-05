@@ -31,8 +31,7 @@ export class API {
       return this.errorRequest(route);
     }
 
-    console.log(query);
-    return await this.routes[route]?.read(new Query(query as Query));
+    return await this.routes[route]?.read(new Query(query));
   }
 
   async patch(path: `${Route}${string}`, data: any) {
@@ -60,7 +59,7 @@ export class API {
     } catch (error) {
       return this.errorRequest(route);
     }
-    return await this.routes[route]?.delete(new Query(query as Query));
+    return await this.routes[route]?.delete(new Query(query));
   }
 
   private getParams(route: `${Route}${string}`): [Route, Object] {
