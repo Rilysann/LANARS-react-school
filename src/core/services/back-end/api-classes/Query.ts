@@ -6,6 +6,7 @@ export class Query {
   search?: string = '';
   ids: number[] = [];
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(query: any) {
     this.limit = +query.limit || this.limit;
     this.offset = +query.offset || this.offset;
