@@ -1,3 +1,4 @@
+import { ServerError } from './api-classes/ServerError';
 import { IDBPDatabase, openDB } from 'idb';
 /* eslint no-console: 0 */  // --> OFF
 class Storage {
@@ -60,8 +61,10 @@ class Storage {
     const store = tx.objectStore(tableName);
     const result = await store.get(id);
     if (!result) {
-      console.log('Id not found', id);
-      return result;
+      return new ServerError(
+        404,
+        `Entity with ID ${id} was not found in ${tableName}`
+      );
     }
     await store.delete(id);
     return id;

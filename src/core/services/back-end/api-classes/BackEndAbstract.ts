@@ -57,10 +57,21 @@ export abstract class BackEndAbstract<Entity extends object> {
         throw new ServerError(400, 'Please provide ids you want to delete');
       });
     }
+
+    const result = query.ids.map((id) => {
+      return new Promise(async (resolve, reject) => {
+        const deleteValue = await Storage.deleteValue(this.tableName, id);
+        if (typeof deleteValue === 'number') {
+          resolve(deleteValue);
+        } else {
+          reject(deleteValue);
+          throw deleteValue;
+        }
+      })
+    });
+    
     return Promise.all(
-      query.ids.map((id) => {
-        return Storage.deleteValue(this.tableName, id);
-      }),
+      result
     );
   }
   abstract validate(data: object, checkRequired: boolean): void;
