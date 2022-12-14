@@ -4,7 +4,5 @@ export interface IPhoto {
     id: number;
     image: string;
     size: number;
-    type: `image/${PhotoTypes}`;
+    type: string;
 }
-
-type PhotoTypes = 'jpeg' | 'webp';
