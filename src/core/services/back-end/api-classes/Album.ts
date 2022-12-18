@@ -37,7 +37,7 @@ export class Album extends BackEndAbstract<AlbumEntity> {
   }
 }
 
-class AlbumEntity {
+export class AlbumEntity {
   title = '';
   description = '';
   photos = []; 

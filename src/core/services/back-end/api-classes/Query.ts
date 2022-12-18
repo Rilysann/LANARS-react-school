@@ -5,6 +5,7 @@ export class Query {
   date?: Date | null = null;
   search?: string = '';
   ids: number[] = [];
+  favorites: boolean = false;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(query: any) {
@@ -13,6 +14,8 @@ export class Query {
     this.sortBy = query.sortBy || this.sortBy;
     this.date = query.date ? new Date(query.date) : this.date;
     this.search = query.search || this.search;
+    this.favorites = query.favorites !== undefined ? query.favorites : this.favorites;
+
     if (typeof query.ids === 'string') {
       this.ids = [+query.ids];
     } else {
