@@ -32,6 +32,10 @@ export abstract class BackEndAbstract<Entity extends object> {
       filteredValues = filteredValues?.filter((value: EntityAbstract) => query?.ids?.includes(value.id));
     }
 
+    if (query.favorites) {
+      filteredValues = filteredValues?.filter((value: EntityAbstract) => value.isFavorite);
+    }
+
     return filteredValues.splice(query.offset, query.limit);
   }
 

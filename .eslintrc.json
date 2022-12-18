@@ -224,14 +224,6 @@
         "format": ["UPPER_CASE", "camelCase", "PascalCase"]
       },
       {
-        "selector": "interface",
-        "format": ["PascalCase"],
-        "custom": {
-          "regex": "^I[A-Z]",
-          "match": true
-        }
-      },
-      {
         "selector": "typeLike",
         "format": ["PascalCase"]
       },
