@@ -4,6 +4,8 @@ import App from './core/App';
 import reportWebVitals from './reportWebVitals';
 import Storage from 'core/services/back-end/Storage';
 import { firstInit } from 'core/services/fistInit';
+import { Provider } from 'react-redux';
+import { store } from './shared/store/store';
 
 (async () => {
   await Storage.createObjectStore(['albums', 'photos']);
@@ -12,9 +14,11 @@ import { firstInit } from 'core/services/fistInit';
     document.getElementById('root') as HTMLElement
   );
   root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <Provider store={store}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Provider>
   );
 
   // If you want to start measuring performance in your app, pass a function
