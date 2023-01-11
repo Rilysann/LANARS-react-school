@@ -3,7 +3,7 @@ export class Query {
   offset: number = 0;
   sortBy?: string = '';
   date?: Date | null = null;
-  search?: string = '';
+  search: string = '';
   ids: number[] = [];
   favorites: boolean = false;
 

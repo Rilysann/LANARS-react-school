@@ -13,7 +13,7 @@ export abstract class BackEndAbstract<Entity extends object> {
   abstract readonly tableName: Tablename;
   abstract readonly requiredFields: string[];
 
-  constructor() {}
+  constructor() { }
 
   async create<T extends Entity>(data: T): Promise<T> {
     const newId = await Storage.putValue(this.tableName, this.entity(data));
@@ -22,12 +22,24 @@ export abstract class BackEndAbstract<Entity extends object> {
 
   async read<T, I extends number | undefined>(query: Query): Promise<I extends number ? T : T[]> {
     if (query.ids.length === 1) {
-      return await Storage.getValue(this.tableName, query.ids[0]);
+      const data = await Storage.getValue(this.tableName, query.ids[0]);
+      if (!data) {
+        return new Promise((resolve, reject) => {
+          reject(new ServerError(404, `Object with id ${query.ids[0]} was not found`));
+          throw new ServerError(404, `Object with id ${query.ids[0]} was not found`);
+        });
+      }
+      return data;
     }
 
     const values = await Storage.getAllValue(this.tableName);
     let filteredValues = values;
-    
+
+    if (query.search) {
+      filteredValues = filteredValues?.filter(<T extends EntityAbstract & {title: string}>(value: T) => value.title.includes(query.search));
+      return filteredValues.splice(query.offset, query.limit);
+    }
+
     if (query.ids.length) {
       filteredValues = filteredValues?.filter((value: EntityAbstract) => query?.ids?.includes(value.id));
     }
@@ -39,12 +51,11 @@ export abstract class BackEndAbstract<Entity extends object> {
     return filteredValues.splice(query.offset, query.limit);
   }
 
-  async update<T extends Entity & {id: number}>(data: T): Promise<T> {
+  async update<T extends Entity & { id: number }>(data: T): Promise<T> {
     const existingData = await Storage.getValue(this.tableName, data.id);
     if (existingData) {
       const newId = await Storage.putValue(this.tableName, data);
-      console.log(newId);
-      
+
       return Storage.getValue(this.tableName, newId);
     } else {
       return new Promise((resolve, reject) => {
@@ -73,7 +84,7 @@ export abstract class BackEndAbstract<Entity extends object> {
         }
       })
     });
-    
+
     return Promise.all(
       result
     );
